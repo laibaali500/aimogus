@@ -1,0 +1,265 @@
+package com.example.aimogus
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.example.aimogus.ui.theme.AImogusTheme
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.Alignment
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            AImogusTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    App()
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun App() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "home") {
+        composable(route = "home") {
+            HomeScreen(onNextScreen = {
+                navController.navigate("lobby")
+            })
+        }
+        composable(route = "lobby") {
+            LobbyScreen(onNextScreen = {
+                navController.navigate("question")
+            })
+        }
+        composable(route = "question") {
+            QuestionScreen(onNextScreen = {
+                navController.navigate("responses")
+            })
+        }
+        composable(route = "responses") {
+            ResponsesScreen(onNextScreen = {
+                navController.navigate("results")
+            })
+        }
+        composable(route = "results") {
+            ResultsScreen(onNextScreen = {
+                navController.navigate("home")
+            })
+        }
+    }
+}
+
+
+@Composable
+fun HomeScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    Column (
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        Text(
+            text = "AImogus",
+            fontSize = 76.sp,
+            lineHeight = 120.sp,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Text(
+            text = "Find the imposter!",
+            fontSize = 38.sp,
+            lineHeight = 60.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Button(
+            onClick = onNextScreen,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text("Start!")
+        }
+    }
+}
+
+@Composable
+fun LobbyScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    Column (
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        Text(
+            text = "Lobby",
+            fontSize = 76.sp,
+            lineHeight = 120.sp,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Button(
+            onClick = onNextScreen,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text("Join Group")
+        }
+    }
+}
+
+@Composable
+fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    Column (
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        var userAnswer by remember { mutableStateOf("")}
+        Text(
+            text = "Question 1",
+            fontSize = 76.sp,
+            lineHeight = 120.sp,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Text(
+            text = "Does playing Valorant make you a degenerate? ",
+            fontSize = 38.sp,
+            lineHeight = 60.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        OutlinedTextField(
+            value = userAnswer,
+            onValueChange = { userAnswer = it },
+            label = {Text("Name")},
+            singleLine = true,
+            modifier = Modifier
+                .padding(24.dp)
+                .align(alignment = Alignment.CenterHorizontally),
+        )
+        Button(
+            onClick = onNextScreen,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text("Start!")
+        }
+    }
+}
+
+@Composable
+fun ResponsesScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    Column (
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        Text(
+            text = "AImogus",
+            fontSize = 76.sp,
+            lineHeight = 120.sp,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Text(
+            text = "Bob: Yes",
+            fontSize = 38.sp,
+            lineHeight = 60.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Button(
+            onClick = onNextScreen,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text("Submit")
+        }
+    }
+}
+
+@Composable
+fun ResultsScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    Column (
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        Text(
+            text = "Results",
+            fontSize = 76.sp,
+            lineHeight = 120.sp,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Text(
+            text = "Bob was the imposter",
+            fontSize = 38.sp,
+            lineHeight = 60.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Button(
+            onClick = onNextScreen,
+            modifier = Modifier
+                .padding(16.dp)
+                .align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text("Back to home")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    AImogusTheme {
+        App()
+    }
+}
