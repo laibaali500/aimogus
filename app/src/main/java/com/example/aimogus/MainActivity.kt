@@ -68,6 +68,11 @@ fun App() {
         }
         composable(route = "responses") {
             ResponsesScreen(onNextScreen = {
+                navController.navigate("decision")
+            })
+        }
+        composable(route = "decision") {
+            DecisionScreen(onNextScreen = {
                 navController.navigate("results")
             })
         }
@@ -84,16 +89,16 @@ fun App() {
 fun HomeScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
     Column (
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "AImogus",
             fontSize = 76.sp,
             lineHeight = 120.sp,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Text(
             text = "Find the imposter!",
@@ -102,13 +107,11 @@ fun HomeScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Button(
             onClick = onNextScreen,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         ) {
             Text("Start!")
         }
@@ -119,22 +122,21 @@ fun HomeScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
 fun LobbyScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
     Column (
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "Lobby",
             fontSize = 76.sp,
             lineHeight = 120.sp,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Button(
             onClick = onNextScreen,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         ) {
             Text("Join Group")
         }
@@ -145,7 +147,8 @@ fun LobbyScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
 fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
     Column (
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()
     ) {
         var userAnswer by remember { mutableStateOf("")}
         Text(
@@ -153,9 +156,8 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             fontSize = 76.sp,
             lineHeight = 120.sp,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Text(
             text = "Does playing Valorant make you a degenerate? ",
@@ -164,7 +166,6 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         OutlinedTextField(
             value = userAnswer,
@@ -173,13 +174,11 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             singleLine = true,
             modifier = Modifier
                 .padding(24.dp)
-                .align(alignment = Alignment.CenterHorizontally),
         )
         Button(
             onClick = onNextScreen,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         ) {
             Text("Start!")
         }
@@ -190,16 +189,16 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
 fun ResponsesScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
     Column (
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
-            text = "AImogus",
+            text = "Responses",
             fontSize = 76.sp,
             lineHeight = 120.sp,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Text(
             text = "Bob: Yes",
@@ -208,13 +207,44 @@ fun ResponsesScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Button(
             onClick = onNextScreen,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text("Submit")
+        }
+    }
+}
+
+@Composable
+fun DecisionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    Column (
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()
+    ) {
+        Text(
+            text = "Decision Time!",
+            fontSize = 76.sp,
+            lineHeight = 120.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(16.dp)
+        )
+        Text(
+            text = "Who is the imposter?",
+            fontSize = 38.sp,
+            lineHeight = 60.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(16.dp)
+        )
+        Button(
+            onClick = onNextScreen,
+            modifier = Modifier
+                .padding(16.dp)
         ) {
             Text("Submit")
         }
@@ -225,16 +255,16 @@ fun ResponsesScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
 fun ResultsScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
     Column (
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "Results",
             fontSize = 76.sp,
             lineHeight = 120.sp,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Text(
             text = "Bob was the imposter",
@@ -243,15 +273,13 @@ fun ResultsScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         )
         Button(
             onClick = onNextScreen,
             modifier = Modifier
                 .padding(16.dp)
-                .align(alignment = Alignment.CenterHorizontally)
         ) {
-            Text("Back to home")
+            Text("Play Again")
         }
     }
 }
