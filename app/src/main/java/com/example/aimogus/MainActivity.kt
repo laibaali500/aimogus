@@ -1,6 +1,7 @@
 package com.example.aimogus
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.Alignment
-
+import com.example.aimogus.Questions
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-
     NavHost(navController = navController, startDestination = "home") {
         composable(route = "home") {
             HomeScreen(onNextScreen = {
@@ -145,12 +145,14 @@ fun LobbyScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
 
 @Composable
 fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    val questions = Questions()
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
     ) {
         var userAnswer by remember { mutableStateOf("")}
+        val questionText = questions.getRandomQuestion()
         Text(
             text = "Question 1",
             fontSize = 76.sp,
@@ -160,7 +162,7 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
                 .padding(16.dp)
         )
         Text(
-            text = "Does playing Valorant make you a degenerate? ",
+            text = questionText,
             fontSize = 38.sp,
             lineHeight = 60.sp,
             textAlign = TextAlign.Center,
@@ -180,7 +182,7 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text("Start!")
+            Text("Submit")
         }
     }
 }
