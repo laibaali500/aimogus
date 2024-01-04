@@ -170,8 +170,8 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = userAnswer,
             onValueChange = { userAnswer = it },
-            label = {Text("Name")},
-            singleLine = true,
+            label = {Text("Answer")},
+            singleLine = false,
             modifier = Modifier
                 .padding(24.dp)
         )
