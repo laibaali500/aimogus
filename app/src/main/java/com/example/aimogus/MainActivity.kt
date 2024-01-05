@@ -28,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -220,6 +221,7 @@ fun ResponsesScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
 
 @Composable
 fun DecisionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    var buttonColour by remember{mutableStateOf(Color.Blue)}
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -242,11 +244,18 @@ fun DecisionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
                 .padding(16.dp)
         )
         Button(
+            onClick = {buttonColour = Color.Gray},
+            modifier = Modifier
+                .padding(25.dp)
+        ){
+            Text("Bob")
+        }
+        Button(
             onClick = onNextScreen,
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text("Submit")
+            Text("Select This Imposter")
         }
     }
 }
