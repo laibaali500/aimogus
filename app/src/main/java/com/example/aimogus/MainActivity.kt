@@ -1,6 +1,7 @@
 package com.example.aimogus
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +53,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-
     NavHost(navController = navController, startDestination = "home") {
         composable(route = "home") {
             HomeScreen(onNextScreen = {
@@ -58,18 +61,20 @@ fun App() {
         }
         composable(route = "lobby") {
             LobbyScreen(onNextScreen = {
-                navController.navigate("question")
+                navController.navigate("question/1")
             })
         }
-        composable(route = "question") {
-            QuestionScreen(onNextScreen = {
-                navController.navigate("responses")
-            })
+        composable(route = "question/{responseCount}",
+            arguments = listOf(navArgument("responseCount") { type = NavType.IntType }))
+        { backStackEntry ->
+            val responseCount = backStackEntry.arguments?.getInt("responseCount") ?:1
+            QuestionScreen(navController, responseCount)
         }
-        composable(route = "responses") {
-            ResponsesScreen(onNextScreen = {
-                navController.navigate("decision")
-            })
+        composable(route = "responses/{responseCount}",
+            arguments = listOf(navArgument("responseCount") { type = NavType.IntType }))
+        { backStackEntry ->
+            val responseCount = backStackEntry.arguments?.getInt("responseCount") ?: 1
+            ResponsesScreen(navController, responseCount)
         }
         composable(route = "decision") {
             DecisionScreen(onNextScreen = {
@@ -144,15 +149,17 @@ fun LobbyScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+fun QuestionScreen(navController: NavHostController, responseCount: Int, modifier: Modifier = Modifier) {
+    val questions = Questions()
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
     ) {
         var userAnswer by remember { mutableStateOf("")}
+        val questionText = questions.getRandomQuestion()
         Text(
-            text = "Question 1",
+            text = "Question $responseCount",
             fontSize = 76.sp,
             lineHeight = 120.sp,
             textAlign = TextAlign.Center,
@@ -160,7 +167,7 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
                 .padding(16.dp)
         )
         Text(
-            text = "Does playing Valorant make you a degenerate? ",
+            text = questionText,
             fontSize = 38.sp,
             lineHeight = 60.sp,
             textAlign = TextAlign.Center,
@@ -170,23 +177,23 @@ fun QuestionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = userAnswer,
             onValueChange = { userAnswer = it },
-            label = {Text("Name")},
-            singleLine = true,
+            label = {Text("Answer")},
+            singleLine = false,
             modifier = Modifier
                 .padding(24.dp)
         )
         Button(
-            onClick = onNextScreen,
+            onClick = {navController.navigate(route = "responses/${responseCount}")},
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text("Start!")
+            Text("Submit")
         }
     }
 }
 
 @Composable
-fun ResponsesScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+fun ResponsesScreen(navController:NavHostController, responseCount : Int, modifier: Modifier = Modifier) {
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -209,7 +216,13 @@ fun ResponsesScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
                 .padding(16.dp)
         )
         Button(
-            onClick = onNextScreen,
+            onClick = {
+                      if (responseCount<3){
+                          navController.navigate(route = "question/${responseCount + 1}")
+                      }else{
+                          navController.navigate(route = "decision")
+                      }
+            },
             modifier = Modifier
                 .padding(16.dp)
         ) {
