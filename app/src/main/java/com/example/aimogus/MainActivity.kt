@@ -1,11 +1,13 @@
 package com.example.aimogus
 
 import android.os.Bundle
-import android.os.Handler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,7 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.aimogus.ui.theme.AImogusTheme
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +36,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -53,6 +61,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
+
     NavHost(navController = navController, startDestination = "home") {
         composable(route = "home") {
             HomeScreen(onNextScreen = {
@@ -233,6 +242,7 @@ fun ResponsesScreen(navController:NavHostController, responseCount : Int, modifi
 
 @Composable
 fun DecisionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
+    var selected by remember{mutableStateOf(false)}
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -254,12 +264,38 @@ fun DecisionScreen(onNextScreen: () -> Unit, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(16.dp)
         )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(16.dp)
+        ){
+            Button(
+                onClick = {selected = !selected},
+                modifier = Modifier
+                    .padding(25.dp)
+//                .background(if (selected) Color.Gray else Color.Transparent)
+            ){
+                Text("Bob")
+            }
+
+            if (selected) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    tint = Color.Green,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+        }
+
+
         Button(
             onClick = onNextScreen,
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text("Submit")
+            Text("Select This Imposter")
         }
     }
 }
